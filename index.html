@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Time Travel Trivia Game</title>
+  <style>
+    body {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    #container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #question {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    #choices button {
+      display: block;
+      margin: 5px;
+      padding: 10px;
+      width: 100%;
+    }
+
+    #nextBtn {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body style="background-image: url('img/time-machine.png');">
+  <div id="container">
+    <h1>Time Travel Trivia Game</h1>
+    <div id="question"></div>
+    <div id="choices"></div>
+    <button id="nextBtn">Next Question</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    // ... (the rest of the JavaScript code remains the same)
+    const triviaData = [
+      {
+        question: "Who is the author of the science fiction novel 'The Time Machine'?",
+        choices: ["H.G. Wells", "Jules Verne", "Isaac Asimov"],
+        correctAnswer: "H.G. Wells"
+      },
+      {
+        question: "In the movie 'Back to the Future,' what is the name of the time-traveling car?",
+        choices: ["The Time Cruiser", "The Time Machine", "The DeLorean"],
+        correctAnswer: "The DeLorean"
+      },
+      {
+        question: "What is the name of the time travel device in 'Doctor Who'?",
+        choices: ["TARDIS", "Time Sphere", "Chrono-Jumper"],
+        correctAnswer: "TARDIS"
+      },
+      {
+        question: "In the 'Terminator' movies, what is the name of the time-traveling AI system?",
+        choices: ["Skynet", "Cyberdyne", "HAL 9000"],
+        correctAnswer: "Skynet"
+      },
+
+      {
+        question: "In the TV series 'Outlander,' what year does Claire Randall accidentally travel back to?",
+        choices: ["1743", "1812", "1920"],
+        correctAnswer: "1743"
+      },
+      {
+        question: "What is the name of the time-traveling phone booth in the movie 'Bill & Ted's Excellent Adventure'?",
+        choices: ["Time Machine", "Phone Traveler", "TARDIS"],
+        correctAnswer: "Time Machine"
+      },
+      {
+        question: "Who played the role of Marty McFly in the 'Back to the Future' movies?",
+        choices: ["Michael J. Fox", "Tom Hanks", "Johnny Depp"],
+        correctAnswer: "Michael J. Fox"
+      },
+      {
+        question: "Which famous scientist is associated with the concept of a 'wormhole' for time travel?",
+        choices: ["Albert Einstein", "Isaac Newton", "Nikola Tesla"],
+        correctAnswer: "Albert Einstein"
+      },
+
+      {
+        question: "In the movie 'Looper,' what is the consequence of killing someone in the past?",
+        choices: ["They instantly disappear", "You gain their memories", "Changes in the future version"],
+        correctAnswer: "Changes in the future version"
+      },
+      {
+        question: "Which classic novel involves a man who experiences time travel after being exposed to a radioactive substance?",
+        choices: ["A Wrinkle in Time", "Slaughterhouse-Five", "The Time Traveler's Wife"],
+        correctAnswer: "The Time Traveler's Wife"
+      },
+      {
+        question: "In the TV series 'Dark,' what is the name of the fictional town where the time travel events take place?",
+        choices: ["Windy Falls", "Shadowville", "Winden"],
+        correctAnswer: "Winden"
+      },
+      {
+        question: "What is the primary method of time travel in the 'Primer' movie?",
+        choices: ["A time-traveling car", "A magic watch", "A self-built time machine"],
+        correctAnswer: "A self-built time machine"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    // Function to display the current question and choices
+    function displayQuestion() {
+      const questionElement = document.getElementById("question");
+      const choicesElement = document.getElementById("choices");
+      const nextBtn = document.getElementById("nextBtn");
+      const resultElement = document.getElementById("result");
+
+      resultElement.innerHTML = "";
+
+      if (currentQuestionIndex < triviaData.length) {
+        const currentQuestion = triviaData[currentQuestionIndex];
+        questionElement.innerHTML = currentQuestion.question;
+
+        // Clear previous choices
+        choicesElement.innerHTML = "";
+
+        // Display answer choices
+        for (let i = 0; i < currentQuestion.choices.length; i++) {
+          const choice = currentQuestion.choices[i];
+          const choiceBtn = document.createElement("button");
+          choiceBtn.innerHTML = choice;
+          choiceBtn.addEventListener("click", checkAnswer);
+          choicesElement.appendChild(choiceBtn);
+        }
+
+        // Hide the "Next Question" button until the player selects an answer
+        nextBtn.style.display = "none";
+      } else {
+        // All questions answered, display final score
+        questionElement.innerHTML = "Trivia game finished!";
+        choicesElement.innerHTML = `Your score: ${score} / ${triviaData.length}`;
+      }
+    }
+
+    function checkAnswer(event) {
+      // ... (existing checkAnswer function code)
+      function checkAnswer(event) {
+        const selectedAnswer = event.target.innerHTML;
+        const currentQuestion = triviaData[currentQuestionIndex];
+
+        // Automatically move to the next question on correct answer
+        if (selectedAnswer === currentQuestion.correctAnswer) {
+          score++;
+          displayResult("Correct!", "green");
+          setTimeout(nextQuestion, 1000); // Automatically proceed after 1 second
+        } else {
+          // ... (existing code for incorrect answer)
+          displayResult("Incorrect!", "red");
+        }
+      }
+
+      // ... (the rest of the JavaScript code remains the same)
+      const nextBtn = document.getElementById("nextBtn");
+      nextBtn.style.display = "block";
+    }
+
+    // Function to display the result (correct/incorrect) after answering a question
+    function displayResult(message, color) {
+      const resultElement = document.getElementById("result");
+      resultElement.innerHTML = message;
+      resultElement.style.color = color;
+    }
+
+    // Function to handle the "Next Question" button click
+    function nextQuestion() {
+      currentQuestionIndex++;
+      displayQuestion();
+    }
+
+    // Event listener for the "Next Question" button
+    document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+
+    // Start the game by displaying the first question
+    displayQuestion();
+  </script>
+</body>
+
+</html>
